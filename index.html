@@ -47,6 +47,20 @@
         .oculto {
             display: none;
         }
+        #calendario {
+            margin-top: 20px;
+            text-align: left;
+        }
+        table {
+            width: 80%;
+            margin: auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -78,6 +92,15 @@
         <section id="resultado" class="oculto">
             <h2>Estrategia Recomendada</h2>
             <p id="estrategiaTexto"></p>
+            <h3>Calendario de Acciones</h3>
+            <table>
+                <tr>
+                    <th>Semana</th>
+                    <th>Acción</th>
+                    <th>Presupuesto Asignado ($USD)</th>
+                </tr>
+                <tbody id="tablaCalendario"></tbody>
+            </table>
         </section>
     </main>
     <script>
@@ -87,12 +110,36 @@
             let artista = document.getElementById('artista').value;
             let genero = document.getElementById('genero').value;
             let plataformas = document.getElementById('plataformas').value;
-            let presupuesto = document.getElementById('presupuesto').value;
-            let fecha = document.getElementById('fecha').value;
+            let presupuesto = parseFloat(document.getElementById('presupuesto').value);
+            let fecha = new Date(document.getElementById('fecha').value);
             
-            let estrategia = `Para ${artista}, un lanzamiento en ${plataformas} dentro del género ${genero} con un presupuesto de $${presupuesto} se recomienda una campaña de contenido orgánico + publicidad pagada, interacción con fans y colaboraciones estratégicas. Lanzamiento oficial el ${fecha}.`;
+            let estrategia = `Para ${artista}, un lanzamiento en ${plataformas} dentro del género ${genero} con un presupuesto de $${presupuesto.toFixed(2)} se recomienda una campaña de contenido orgánico + publicidad pagada, interacción con fans y colaboraciones estratégicas. Lanzamiento oficial el ${fecha.toDateString()}.`;
             
             document.getElementById('estrategiaTexto').innerText = estrategia;
+            
+            let acciones = [
+                "Anuncio del lanzamiento con teaser video",
+                "Reels promocionales en redes sociales",
+                "Campaña de Ads en plataformas digitales",
+                "Lanzamiento oficial y watch party",
+                "Entrevistas y colaboraciones con influencers",
+                "Seguimiento y análisis de métricas"
+            ];
+            
+            let tabla = document.getElementById('tablaCalendario');
+            tabla.innerHTML = "";
+            
+            let presupuestoSemanal = (presupuesto / acciones.length).toFixed(2);
+            
+            for (let i = 0; i < acciones.length; i++) {
+                let fila = `<tr>
+                    <td>Semana ${i + 1}</td>
+                    <td>${acciones[i]}</td>
+                    <td>$${presupuestoSemanal}</td>
+                </tr>`;
+                tabla.innerHTML += fila;
+            }
+            
             document.getElementById('resultado').classList.remove('oculto');
         });
     </script>
