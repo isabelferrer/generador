@@ -3,122 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Contraseñas Seguras</title>
+    <title>Generador de Rutas de Lanzamiento</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            margin: 0;
+            padding: 0;
             background: #f4f4f4;
-        }
-        .container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            color: #333;
             text-align: center;
         }
-        .password-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
+        header {
+            background: #222;
+            color: white;
+            padding: 1rem;
         }
-        input[type="text"] {
-            flex: 1;
+        main {
+            padding: 2rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 300px;
+            margin: 0 auto;
+        }
+        label {
+            margin-top: 10px;
+        }
+        input, button {
             padding: 10px;
+            margin-top: 5px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 18px;
         }
         button {
-            background: #28a745;
+            background: #007BFF;
             color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
             cursor: pointer;
         }
         button:hover {
-            background: #218838;
+            background: #0056b3;
         }
-        .options {
-            text-align: left;
-            margin: 10px 0;
+        .oculto {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Generador de Contraseñas Seguras</h1>
-        <div class="password-container">
-            <input type="text" id="password" readonly>
-            <button id="copy-btn">📋</button>
-        </div>
-        <div class="options">
-            <label>Longitud: <span id="length-value">12</span></label>
-            <input type="range" id="length" min="8" max="32" value="12">
-            <label><input type="checkbox" id="uppercase" checked> Incluir mayúsculas</label>
-            <label><input type="checkbox" id="numbers" checked> Incluir números</label>
-            <label><input type="checkbox" id="symbols" checked> Incluir símbolos</label>
-        </div>
-        <button id="generate-btn">Generar Contraseña</button>
-        <p id="strength"></p>
-    </div>
+    <header>
+        <h1>Generador de Rutas de Lanzamiento 🎶</h1>
+    </header>
+    <main>
+        <section id="formulario">
+            <h2>Ingresa los detalles de tu lanzamiento</h2>
+            <form id="lanzamientoForm">
+                <label for="artista">Nombre del Artista:</label>
+                <input type="text" id="artista" required>
+                
+                <label for="genero">Género Musical:</label>
+                <input type="text" id="genero" required>
+                
+                <label for="plataformas">Plataformas de Distribución:</label>
+                <input type="text" id="plataformas" required>
+                
+                <label for="presupuesto">Presupuesto de Marketing ($USD):</label>
+                <input type="number" id="presupuesto" required>
+                
+                <label for="fecha">Fecha de Lanzamiento:</label>
+                <input type="date" id="fecha" required>
+                
+                <button type="submit">Generar Estrategia</button>
+            </form>
+        </section>
+        <section id="resultado" class="oculto">
+            <h2>Estrategia Recomendada</h2>
+            <p id="estrategiaTexto"></p>
+        </section>
+    </main>
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const passwordField = document.getElementById("password");
-            const copyBtn = document.getElementById("copy-btn");
-            const generateBtn = document.getElementById("generate-btn");
-            const lengthInput = document.getElementById("length");
-            const lengthValue = document.getElementById("length-value");
-            const uppercaseCheckbox = document.getElementById("uppercase");
-            const numbersCheckbox = document.getElementById("numbers");
-            const symbolsCheckbox = document.getElementById("symbols");
-            const strengthIndicator = document.getElementById("strength");
-
-            const generatePassword = () => {
-                const length = lengthInput.value;
-                let chars = "abcdefghijklmnopqrstuvwxyz";
-                if (uppercaseCheckbox.checked) chars += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-                if (numbersCheckbox.checked) chars += "0123456789";
-                if (symbolsCheckbox.checked) chars += "!@#$%^&*()_-+=<>?/";
-                
-                let password = "";
-                const array = new Uint32Array(length);
-                window.crypto.getRandomValues(array);
-                for (let i = 0; i < length; i++) {
-                    password += chars[array[i] % chars.length];
-                }
-                
-                passwordField.value = password;
-                evaluateStrength(password);
-            };
-
-            const evaluateStrength = (password) => {
-                let score = 0;
-                if (password.length >= 12) score++;
-                if (/[A-Z]/.test(password)) score++;
-                if (/[0-9]/.test(password)) score++;
-                if (/[^a-zA-Z0-9]/.test(password)) score++;
-                
-                const levels = ["Débil", "Moderada", "Fuerte", "Muy Fuerte"];
-                strengthIndicator.textContent = `Fortaleza: ${levels[score]}`;
-            };
-
-            copyBtn.addEventListener("click", () => {
-                passwordField.select();
-                document.execCommand("copy");
-            });
-
-            generateBtn.addEventListener("click", generatePassword);
-            lengthInput.addEventListener("input", () => {
-                lengthValue.textContent = lengthInput.value;
-            });
-
-            generatePassword();
+        document.getElementById('lanzamientoForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let artista = document.getElementById('artista').value;
+            let genero = document.getElementById('genero').value;
+            let plataformas = document.getElementById('plataformas').value;
+            let presupuesto = document.getElementById('presupuesto').value;
+            let fecha = document.getElementById('fecha').value;
+            
+            let estrategia = `Para ${artista}, un lanzamiento en ${plataformas} dentro del género ${genero} con un presupuesto de $${presupuesto} se recomienda una campaña de contenido orgánico + publicidad pagada, interacción con fans y colaboraciones estratégicas. Lanzamiento oficial el ${fecha}.`;
+            
+            document.getElementById('estrategiaTexto').innerText = estrategia;
+            document.getElementById('resultado').classList.remove('oculto');
         });
     </script>
 </body>
