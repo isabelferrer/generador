@@ -3,145 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generador de Rutas de Lanzamiento</title>
+    <title>Cuestionario de Clientes</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: #f4f4f4;
+            font-family: 'Arial', sans-serif;
+            background-color: #ffffff;
             color: #333;
             text-align: center;
+            padding: 20px;
         }
-        header {
-            background: #222;
-            color: white;
-            padding: 1rem;
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: linear-gradient(135deg, #ff7f00, #ffaf40);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
-        main {
-            padding: 2rem;
+        h1 {
+            color: #007f7f;
+            font-size: 24px;
+            margin-bottom: 10px;
         }
-        form {
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            margin: 0 auto;
+        .subtitle {
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-weight: bold;
         }
-        label {
-            margin-top: 10px;
+        .artist-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #005f5f;
+            margin-bottom: 15px;
         }
-        input, button {
+        .question {
+            margin-bottom: 20px;
+            text-align: left;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        input[type="text"] {
+            width: calc(100% - 20px);
             padding: 10px;
-            margin-top: 5px;
+            margin-top: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
         }
         button {
-            background: #007BFF;
+            background: #007f7f;
             color: white;
+            border: none;
+            padding: 12px 25px;
+            margin-top: 20px;
             cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
         }
         button:hover {
-            background: #0056b3;
-        }
-        .oculto {
-            display: none;
-        }
-        #calendario {
-            margin-top: 20px;
-            text-align: left;
-        }
-        table {
-            width: 80%;
-            margin: auto;
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
+            background: #005f5f;
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Generador de Rutas de Lanzamiento 🎶</h1>
-    </header>
-    <main>
-        <section id="formulario">
-            <h2>Ingresa los detalles de tu lanzamiento</h2>
-            <form id="lanzamientoForm">
-                <label for="artista">Nombre del Artista:</label>
-                <input type="text" id="artista" required>
-                
-                <label for="genero">Género Musical:</label>
-                <input type="text" id="genero" required>
-                
-                <label for="plataformas">Plataformas de Distribución:</label>
-                <input type="text" id="plataformas" required>
-                
-                <label for="presupuesto">Presupuesto de Marketing ($USD):</label>
-                <input type="number" id="presupuesto" required>
-                
-                <label for="fecha">Fecha de Lanzamiento:</label>
-                <input type="date" id="fecha" required>
-                
-                <button type="submit">Generar Estrategia</button>
-            </form>
-        </section>
-        <section id="resultado" class="oculto">
-            <h2>Estrategia Recomendada</h2>
-            <p id="estrategiaTexto"></p>
-            <h3>Calendario de Acciones</h3>
-            <table>
-                <tr>
-                    <th>Semana</th>
-                    <th>Acción</th>
-                    <th>Presupuesto Asignado ($USD)</th>
-                </tr>
-                <tbody id="tablaCalendario"></tbody>
-            </table>
-        </section>
-    </main>
+    <div class="container">
+        <h1>Cuestionario para Artistas</h1>
+        <p class="subtitle">Este cuestionario nos ayudará a ampliar la visión sobre el proyecto para así poder desarrollar una estrategia adecuada al mismo. Por favor, llenar lo más completo y detallado posible.</p>
+        <p class="artist-name">Nombre del Artista:</p>
+        <input type="text" id="artistName" placeholder="Ingresa tu nombre artístico">
+        <div id="quiz"></div>
+        <button onclick="saveAnswers()">Guardar Respuestas</button>
+    </div>
+    
     <script>
-        document.getElementById('lanzamientoForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            
-            let artista = document.getElementById('artista').value;
-            let genero = document.getElementById('genero').value;
-            let plataformas = document.getElementById('plataformas').value;
-            let presupuesto = parseFloat(document.getElementById('presupuesto').value);
-            let fecha = new Date(document.getElementById('fecha').value);
-            
-            let estrategia = `Para ${artista}, un lanzamiento en ${plataformas} dentro del género ${genero} con un presupuesto de $${presupuesto.toFixed(2)} se recomienda una campaña de contenido orgánico + publicidad pagada, interacción con fans y colaboraciones estratégicas. Lanzamiento oficial el ${fecha.toDateString()}.`;
-            
-            document.getElementById('estrategiaTexto').innerText = estrategia;
-            
-            let acciones = [
-                "Anuncio del lanzamiento con teaser video",
-                "Reels promocionales en redes sociales",
-                "Campaña de Ads en plataformas digitales",
-                "Lanzamiento oficial y watch party",
-                "Entrevistas y colaboraciones con influencers",
-                "Seguimiento y análisis de métricas"
-            ];
-            
-            let tabla = document.getElementById('tablaCalendario');
-            tabla.innerHTML = "";
-            
-            let presupuestoSemanal = (presupuesto / acciones.length).toFixed(2);
-            
-            for (let i = 0; i < acciones.length; i++) {
-                let fila = `<tr>
-                    <td>Semana ${i + 1}</td>
-                    <td>${acciones[i]}</td>
-                    <td>$${presupuestoSemanal}</td>
-                </tr>`;
-                tabla.innerHTML += fila;
-            }
-            
-            document.getElementById('resultado').classList.remove('oculto');
+        const questions = [
+            "¿Cuáles son tus objetivos principales del proyecto a corto y mediano plazo?",
+            "¿Cuántos sencillos tienes en plataformas digitales? Menciónalos.",
+            "¿Con qué artistas, músicos, compositores o productores reconocidos has colaborado y en qué proyectos?",
+            "¿En qué lugares te has presentado en vivo?",
+            "¿Tocas algún instrumento? ¿Cuáles?",
+            "¿Has producido música? Si es así, detalla tu experiencia.",
+            "¿Tienes canciones de tu autoría? Especifica cuáles y si están publicadas.",
+            "¿Cuentas con videos musicales oficiales? ¿Cuántos y cuáles?",
+            "¿Qué te distingue de otros artistas con proyectos similares?",
+            "¿Cómo describirías a tu audiencia? (Ejemplo: Mujeres de 18-30 años con interés en...)",
+            "¿Tienes identificada a tu competencia directa e indirecta? Menciona 3 perfiles.",
+            "¿Cuáles son tus mayores influencias o inspiraciones musicales?",
+            "¿Tienes algún EP o álbum publicado? Comparte detalles.",
+            "¿Qué colores te gustaría usar en tus publicaciones de redes sociales?",
+            "¿Qué tipo de tipografía prefieres para tus publicaciones?",
+            "¿Prefieres recursos visuales con vectores o imágenes reales?",
+            "¿Tienes un logotipo artístico o tipografía especial para tu nombre artístico?",
+            "¿Tienes un book especial con fotografías o videos de tus proyectos?",
+            "Menciona tres palabras que caracterizan tu proyecto.",
+            "¿Qué tono de comunicación prefieres para tus redes? (Ejemplo: alegre, serio, cercano)",
+            "¿Qué hashtags utilizas con más frecuencia en redes?",
+            "¿Qué palabras o frases te gustaría que fueran recurrentes en tu contenido?",
+            "¿Qué emojis usas con más frecuencia?",
+            "¿Cómo sueles saludar a tu audiencia?",
+            "¿Cómo te despides en redes sociales?",
+            "¿Con qué palabras expresas felicidad?",
+            "¿Con qué palabras muestras gratitud?",
+            "¿Cómo respondes a comentarios negativos?",
+            "¿Tienes frases de tu autoría o citas favoritas que uses con frecuencia?",
+            "Comparte datos curiosos o 'sabías qué' sobre tu proyecto para nutrir contenido en redes.",
+            "¿Qué temas te gustaría abordar en tu cuenta? (Ejemplo: datos curiosos, covers, inspiración)",
+            "¿Qué temas prefieres evitar en tu contenido?",
+            "¿Qué imagen deseas proyectar en tus redes sociales? ¿Quieres mostrar más de tu proceso creativo o mantenerlo privado?"
+        ];
+        
+        const quizContainer = document.getElementById("quiz");
+        
+        questions.forEach((question, index) => {
+            let div = document.createElement("div");
+            div.classList.add("question");
+            div.innerHTML = `<p>${index + 1}. ${question}</p><input type='text' id='q${index}'>`;
+            quizContainer.appendChild(div);
         });
+        
+        function saveAnswers() {
+            let answers = { artistName: document.getElementById("artistName").value };
+            questions.forEach((_, index) => {
+                answers[`q${index}`] = document.getElementById(`q${index}`).value;
+            });
+            localStorage.setItem("quizAnswers", JSON.stringify(answers));
+            alert("Respuestas guardadas correctamente!");
+        }
     </script>
 </body>
 </html>
